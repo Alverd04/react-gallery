@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { createRef, useEffect, useState } from "react";
 import "react-slidy/lib/styles.css";
 import ReactSlidy from "react-slidy";
