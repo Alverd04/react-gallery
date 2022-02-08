@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import PropTypes from "prop-types";
 import { createRef, useEffect, useState } from "react";
 import "react-slidy/lib/styles.css";
 import ReactSlidy from "react-slidy";
@@ -26,12 +27,11 @@ export const ImageGallerySlider = ({
   images,
   customArrowLeft,
   customArrowRight,
-  lazyLoading,
   itemsToPreload = 5,
-  initialSlide = 0,
+  initialSlide = 5,
 }) => {
-  const [currentImage, setCurrentImage] = useState(1);
-  const [direction, setDirection] = useState();
+  const [currentImage, setCurrentImage] = useState(initialSlide);
+  const [direction, setDirection] = useState("right");
   const [maxIndex, setMaxIndex] = useState(initialSlide);
 
   const itemsToRender = getItemsToRender({
@@ -110,6 +110,7 @@ export const ImageGallerySlider = ({
         slide={currentImage - 1}
         itemsToPreload={itemsToPreload}
         useFullWidth={false}
+        initialSlide={initialSlide - 1}
       >
         {itemsToRender.map((image) => (
           <img alt="" key={image.id} src={image.src} />
@@ -140,4 +141,22 @@ export const ImageGallerySlider = ({
       </div>
     </div>
   );
+};
+
+ImageGallerySlider.propTypes = {
+  /*Images to be shown in gallery */
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      src: PropTypes.string,
+    })
+  ).isRequired,
+  /*Custom arrow left icon */
+  customArrowLeft: PropTypes.elementType,
+  /*Custom arrow right icon */
+  customArrowRight: PropTypes.elementType,
+  /*Number of images to preload */
+  itemsToPreload: PropTypes.number,
+  /*Initial slide */
+  initialSlide: PropTypes.number,
 };
