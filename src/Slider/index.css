@@ -1,0 +1,48 @@
+@import '~react-slidy/lib/styles';
+
+
+.slider {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.slider-scroll {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-scroll-ul {
+  margin: 0;
+  padding: 0;
+  width: 500px;
+  display: flex;
+  overflow-x: hidden;
+  list-style: none;
+  box-sizing: content-box;
+}
+
+.slider-scroll-li{
+  margin: 0;
+  padding: 0;
+  width: 100px;
+}
+
+.slider-scroll-li:hover {
+  cursor: pointer;
+}
+
+.slider-scroll-img {
+  width: 100px;
+  height: 60px;
+  opacity: 0.3;
+}
+
+.selected {
+  width: 100px;
+  opacity: 1;
+}
