@@ -73,18 +73,20 @@ export const ImageGallerySlider = ({
 
   return (
     <div className={BASE_CLASS}>
-      <ReactSlidy
-        ArrowLeft={customArrowLeft}
-        ArrowRight={customArrowRight}
-        infiniteLoop
-        doBeforeSlide={imageChangeHandler}
-        slide={currentImage - 1}
-        useFullWidth={false}
-      >
-        {images.map((image) => (
-          <img alt="" key={image.id} src={image.src} />
-        ))}
-      </ReactSlidy>
+      <div className={`${BASE_CLASS}-main`}>
+        <ReactSlidy
+          ArrowLeft={customArrowLeft}
+          ArrowRight={customArrowRight}
+          infiniteLoop
+          doBeforeSlide={imageChangeHandler}
+          slide={currentImage - 1}
+          useFullWidth={false}
+        >
+            {images.map((image) => (
+              <div key={image.id} className={`${BASE_CLASS}-imageBig`}><img alt="" key={image.id} src={image.src} /></div>
+          ))}
+        </ReactSlidy>
+      </div>
       <p>{`${currentImage}/${images.length}`}</p>
       <div className={`${BASE_CLASS}-scroll`}>
         <ul className={`${BASE_CLASS}-scroll-ul`}>

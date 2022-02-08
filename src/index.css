@@ -1,27 +1,13 @@
+*, *::after, *::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 .app {
-    align-items: center;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    justify-content: center;
-    width: 100%;
-}
-
-.sliderContainer {
     align-items: center;
-    animation: 5s fadeIn;
-    display: flex;
-    justify-content: center;
-    width: 60%;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
 }
 
 body {
