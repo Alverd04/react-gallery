@@ -28,7 +28,7 @@ export const ImageGallerySlider = ({
   customArrowLeft,
   customArrowRight,
   itemsToPreload = 5,
-  initialSlide = 0,
+  initialSlide = 1,
 }) => {
   const [currentImage, setCurrentImage] = useState(initialSlide);
   const [direction, setDirection] = useState("right");
