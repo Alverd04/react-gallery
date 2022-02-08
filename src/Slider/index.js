@@ -1,21 +1,48 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { createRef, useEffect, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import "react-slidy/lib/styles.css";
 import ReactSlidy from "react-slidy";
 import "./index.css";
 const BASE_CLASS = "slider";
+
+function getItemsToRender({
+  index,
+  maxIndex,
+  items,
+  itemsToPreload = 2,
+  numOfSlides,
+}) {
+  const preload = Math.max(itemsToPreload, numOfSlides);
+  if (index >= items.length - numOfSlides) {
+    const addNewItems =
+      items.length > numOfSlides ? items.slice(0, numOfSlides - 1) : [];
+    return [...items.slice(0, maxIndex + preload), ...addNewItems];
+  } else {
+    return items.slice(0, maxIndex + preload);
+  }
+}
 
 export const ImageGallerySlider = ({
   images,
   customArrowLeft,
   customArrowRight,
   lazyLoading,
-  itemsToPreload,
+  itemsToPreload = 5,
+  initialSlide = 0,
 }) => {
   const [currentImage, setCurrentImage] = useState(1);
   const [direction, setDirection] = useState();
+  const [maxIndex, setMaxIndex] = useState(initialSlide);
 
-  const refs = images.reduce((acc, value) => {
+  const itemsToRender = getItemsToRender({
+    index: currentImage,
+    maxIndex: maxIndex + 1,
+    items: images,
+    itemsToPreload: itemsToPreload,
+    numOfSlides: 1,
+  });
+
+  const refs = itemsToRender.reduce((acc, value) => {
     acc[value.id] = createRef();
     return acc;
   }, {});
@@ -42,6 +69,7 @@ export const ImageGallerySlider = ({
     }
     if (direction === "left") {
       if (currentImage === 1 || currentImage === images.length) {
+        setMaxIndex(10);
         refs[currentImage].current.scrollIntoView({
           behavior: "smooth",
           block: "center",
@@ -61,6 +89,7 @@ export const ImageGallerySlider = ({
 
   const imageChangeHandler = (e) => {
     const { currentSlide, nextSlide } = e;
+    if (nextSlide + 1 > maxIndex) setMaxIndex(nextSlide + 1);
     if (currentSlide - nextSlide > 0) {
       setDirection("left");
       setCurrentImage(nextSlide + 1);
@@ -79,16 +108,17 @@ export const ImageGallerySlider = ({
         infiniteLoop
         doBeforeSlide={imageChangeHandler}
         slide={currentImage - 1}
+        itemsToPreload={itemsToPreload}
         useFullWidth={false}
       >
-        {images.map((image) => (
+        {itemsToRender.map((image) => (
           <img alt="" key={image.id} src={image.src} />
         ))}
       </ReactSlidy>
       <p>{`${currentImage}/${images.length}`}</p>
       <div className={`${BASE_CLASS}-scroll`}>
         <ul className={`${BASE_CLASS}-scroll-ul`}>
-          {images.map((item) => (
+          {itemsToRender.map((item) => (
             <li
               className={`${BASE_CLASS}-scroll-li`}
               onClick={() => onClickHandler(item.id)}
