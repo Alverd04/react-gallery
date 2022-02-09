@@ -39,4 +39,8 @@ export const IMAGES = [
     id: 10,
     src: "https://www.teahub.io/photos/full/97-975297_spiderman-wallpaper-4k.jpg",
   },
+  {
+    id: 11,
+    src: "https://www.teahub.io/photos/full/97-975297_spiderman-wallpaper-4k.jpg",
+  },
 ];

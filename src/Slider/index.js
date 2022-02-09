@@ -32,8 +32,8 @@ export const ImageGallerySlider = ({
   initialSlide = 0,
 }) => {
   const [currentImage, setCurrentImage] = useState(initialSlide);
-  const itemWidth = 100 / itemsToPreload; // 25%
-  const sideItems = (itemsToPreload + 1) / 2; // 3
+  const itemWidth = 100 / itemsToPreload;
+  const sideItems = (itemsToPreload + 1) / 2;
 
   const list = useRef();
 
@@ -51,7 +51,7 @@ export const ImageGallerySlider = ({
     }
     if (currentImage > images.length - 1 - sideItems) {
       list.current.style.transform = `translateX(-${
-        (images.length * itemWidth) / 2
+        (images.length - sideItems - 2) * itemWidth
       }%)`; // 100%
     } else {
       list.current.style.transform = `translateX(-${
