@@ -1,7 +1,4 @@
 @import '~react-slidy/lib/styles';
-:root {
-  --max-width-slider: 850px;
-}
 
 .slider {
   animation: 5s fadeIn;
@@ -18,27 +15,41 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 0 50px;
+  padding: 0 var(--p-arrows);
 }
-@media screen and (max-width: 850px) {
+
+@media screen and (max-width: var(--max-width-slider)) {
   .slider-main {
     padding: 0;
   }
 }
+
 .react-Slidy {
   position: static;
   max-width: var(--max-width-slider);
   width: 100%;
 }
 
-.react-Slidy .slider-imageBig {
+.react-Slidy .slider-imageWrapper, .slider-scroll .slider-imageWrapper {
   position: relative;
   width: 100%;
   overflow: hidden;
-  padding-top: 66.6666%; /* 3:2 Aspect Ratio (divide 2 by 3 = 0.666666) */
+  padding-top: var(--ar-images);
+  display: block;
 }
 
-.react-Slidy .slider-imageBig img {
+.slider-scroll .slider-imageWrapper {
+  opacity: var(--op-cards);
+  border: var(--bd-base) solid var(--c-black);
+  margin: 0 var(--m-base);
+}
+
+.slider-scroll .selected {
+  opacity: 1;
+  border-color: var(--c-white);
+}
+
+.react-Slidy .slider-imageWrapper img,  .slider-scroll .slider-imageWrapper img {
   position: absolute;
   top: 0;
   left: 0;
@@ -52,16 +63,20 @@
   object-fit: contain;
 }
 
+.slider-scroll .slider-imageWrapper img {
+  object-fit: cover;
+}
+
 .react-Slidy .react-Slidy-arrow {
   opacity: 1;
 }
 
 .react-Slidy-arrowRight {
-  right: 2%;
+  right: var(--s-arrows);
 }
 
 .react-Slidy-arrowLeft {
-  left: 2%;
+  left: var(--s-arrows);
 }
 
 .react-Slidy-prev, .react-Slidy-next {
@@ -69,50 +84,24 @@
 }
 
 .react-Slidy-prev::after, .react-Slidy-next::after {
-  transition: 0.3s all ease-in-out;
+  transition: var(--trs-base);
 }
 
 .react-Slidy-prev:hover::after, .react-Slidy-next:hover::after {
-  border-color: #fff;
-  transition: 0.3s all ease-in-out;
+  border-color: var(--c-white);
+  transition: var(--trs-base);
 }
 
 .slider-scroll {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.slider-scroll-ul {
-  margin: 0;
-  padding: 0;
-  width: 500px;
+  width: var(--max-width-slider);
   display: flex;
   overflow-x: hidden;
   list-style: none;
-  box-sizing: content-box;
 }
 
-.slider-scroll-li{
-  margin: 0;
-  padding: 0;
-  width: 100px;
-}
-
-.slider-scroll-li:hover {
+.slider-scroll-item {
+  width: var(--w-scroll-image);
   cursor: pointer;
-}
-
-.slider-scroll-img {
-  width: 100px;
-  height: 60px;
-  opacity: 0.3;
-}
-
-.selected {
-  width: 100px;
-  opacity: 1;
 }
 
 @keyframes fadeIn {

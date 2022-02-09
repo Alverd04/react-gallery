@@ -3,6 +3,22 @@
     margin: 0;
     padding: 0;
 }
+
+:root {
+    --max-width-slider: 850px;
+    --w-scroll-image: 110px;
+    --c-black: #1D1D1D;
+    --c-white: #fff;
+    --op-cards: 0.7;
+    --m-base: 8px;
+    --p-base: 8px;
+    --bd-base: 2px;
+    --trs-base: 0.3s all ease-in-out;
+    --p-arrows: calc(var(--p-base) * 6);
+    --ar-images: 66.6666%; /* 3:2 Aspect Ratio (divide 2 by 3 = 0.666666) */
+    --s-arrows: 2%;
+}
+
 .app {
     height: 100vh;
     display: flex;
@@ -12,6 +28,6 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: black;
-    color: white;
+    background-color: var(--c-black);
+    color: var(--c-white);
 }

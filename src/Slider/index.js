@@ -83,33 +83,29 @@ export const ImageGallerySlider = ({
           useFullWidth={false}
         >
             {images.map((image) => (
-              <div key={image.id} className={`${BASE_CLASS}-imageBig`}><img alt="" key={image.id} src={image.src} /></div>
+              <span key={image.id} className={`${BASE_CLASS}-imageWrapper`}><img alt="" key={image.id} src={image.src} /></span>
           ))}
         </ReactSlidy>
       </div>
       <p>{`${currentImage}/${images.length}`}</p>
-      <div className={`${BASE_CLASS}-scroll`}>
-        <ul className={`${BASE_CLASS}-scroll-ul`}>
-          {images.map((item) => (
-            <li
-              className={`${BASE_CLASS}-scroll-li`}
-              onClick={() => onClickHandler(item.id)}
-              ref={refs[item.id]}
-              key={item.id}
-            >
-              <img
-                className={
+      <ul className={`${BASE_CLASS}-scroll`}>
+        {images.map((item) => (
+          <li
+            className={`${BASE_CLASS}-scroll-item`}
+            onClick={() => onClickHandler(item.id)}
+            ref={refs[item.id]}
+            key={item.id}
+          >
+            <span key={item.id} className={
                   currentImage === item.id
-                    ? `${BASE_CLASS}-scroll-img selected`
-                    : `${BASE_CLASS}-scroll-img`
-                }
-                src={item.src}
-                alt=""
-              />
-            </li>
-          ))}
-        </ul>
-      </div>
+                    ? `${BASE_CLASS}-imageWrapper selected`
+                    : `${BASE_CLASS}-imageWrapper`
+                }>
+              <img src={item.src} alt="" />
+            </span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
