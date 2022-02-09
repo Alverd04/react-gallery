@@ -50,7 +50,9 @@ export const ImageGallerySlider = ({
       list.current.style.transform = `translateX(${0}%)`; // 0%
     }
     if (currentImage > images.length - 1 - sideItems) {
-      list.current.style.transform = `translateX(-${100}%)`; // 100%
+      list.current.style.transform = `translateX(-${
+        (images.length * itemWidth) / 2
+      }%)`; // 100%
     } else {
       list.current.style.transform = `translateX(-${
         (currentImage + 1 - sideItems) * itemWidth
