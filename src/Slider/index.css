@@ -3,19 +3,19 @@
 .slider {
   animation: 5s fadeIn;
   width: 100%;
-  flex: 1 1 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  flex: 1 1 100%;
+  justify-content: space-around;
 }
 
 .slider-main {
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 0 var(--p-arrows);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 0 var(--p-arrows);
+    position: relative;
 }
 
 @media screen and (max-width: var(--max-width-slider)) {
@@ -30,6 +30,30 @@
   width: 100%;
 }
 
+.slider-scroll {
+  overflow: hidden;
+  width: var(--max-width-slider);
+}
+
+.slider-scroll-ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  transition-property: transform;
+  width: 100%;
+  will-change: transform, transition-timing, transition-duration;
+}
+
+.slider-scroll-li{
+  position: relative;
+  user-select: none;
+  vertical-align: middle;
+  flex: 1 0 var(--w-scroll-image);
+  cursor: pointer;
+}
+
+
+
 .react-Slidy .slider-imageWrapper, .slider-scroll .slider-imageWrapper {
   position: relative;
   width: 100%;
@@ -41,7 +65,7 @@
 .slider-scroll .slider-imageWrapper {
   opacity: var(--op-cards);
   border: var(--bd-base) solid var(--c-black);
-  margin: 0 var(--m-base);
+  /* margin: 0 var(--m-base); */
 }
 
 .slider-scroll .selected {
@@ -90,18 +114,6 @@
 .react-Slidy-prev:hover::after, .react-Slidy-next:hover::after {
   border-color: var(--c-white);
   transition: var(--trs-base);
-}
-
-.slider-scroll {
-  width: var(--max-width-slider);
-  display: flex;
-  overflow-x: hidden;
-  list-style: none;
-}
-
-.slider-scroll-item {
-  width: var(--w-scroll-image);
-  cursor: pointer;
 }
 
 @keyframes fadeIn {

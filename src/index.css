@@ -6,7 +6,7 @@
 
 :root {
     --max-width-slider: 850px;
-    --w-scroll-image: 110px;
+    --w-scroll-image: 20%;
     --c-black: #1D1D1D;
     --c-white: #fff;
     --op-cards: 0.7;
