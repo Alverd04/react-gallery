@@ -1,18 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import PropTypes from "prop-types";
-import { createRef, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "react-slidy/lib/styles.css";
 import ReactSlidy from "react-slidy";
 import "./index.css";
 const BASE_CLASS = "slider";
 
+// Still need to adapt checks for our component
 function getItemsToRender({
   index,
   maxIndex,
   items,
-  itemsToPreload = 2,
+  itemsToPreload,
   numOfSlides,
 }) {
+  maxIndex > items.length && (maxIndex = items.length);
   const preload = Math.max(itemsToPreload, numOfSlides);
   if (index >= items.length - numOfSlides) {
     const addNewItems =
@@ -23,112 +25,74 @@ function getItemsToRender({
   }
 }
 
+// Fix initial slidesCount to start at 0
 export const ImageGallerySlider = ({
   images,
-  customArrowLeft,
-  customArrowRight,
   itemsToPreload = 5,
-  initialSlide = 1,
+  initialSlide = 0,
 }) => {
   const [currentImage, setCurrentImage] = useState(initialSlide);
-  const [direction, setDirection] = useState("right");
-  const [maxIndex, setMaxIndex] = useState(initialSlide);
+  const itemWidth = 100 / itemsToPreload; // 25%
+  const sideItems = (itemsToPreload + 1) / 2; // 3
+
+  const list = useRef();
 
   const itemsToRender = getItemsToRender({
     index: currentImage,
-    maxIndex: maxIndex + 1,
+    maxIndex: currentImage + itemsToPreload,
     items: images,
     itemsToPreload: itemsToPreload,
     numOfSlides: 1,
   });
 
-  const refs = itemsToRender.reduce((acc, value) => {
-    acc[value.id] = createRef();
-    return acc;
-  }, {});
-
-  const onClickHandler = (clickSlideId) => {
-    if (clickSlideId - currentImage > 0) setDirection("right");
-    if (clickSlideId - currentImage < 0) setDirection("left");
-    setCurrentImage(clickSlideId);
-  };
-
-  const handlePreviewMove = () => {
-    if (direction === "right") {
-      if (currentImage === images.length || currentImage === 1) {
-        refs[currentImage].current.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      } else {
-        refs[currentImage + 1].current.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      }
-    }
-    if (direction === "left") {
-      if (currentImage === 1 || currentImage === images.length) {
-        setMaxIndex(10);
-        refs[currentImage].current.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      } else {
-        refs[currentImage - 1].current.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      }
-    }
-  };
-
   useEffect(() => {
-    handlePreviewMove();
-  }, [currentImage, direction, refs, images.length]);
+    if (currentImage < sideItems) {
+      list.current.style.transform = `translateX(${0}%)`; // 0%
+    }
+    if (currentImage > images.length - 1 - sideItems) {
+      list.current.style.transform = `translateX(-${100}%)`; // 100%
+    } else {
+      list.current.style.transform = `translateX(-${
+        (currentImage + 1 - sideItems) * itemWidth
+      }%)`;
+    }
+  }, [currentImage, images.length]);
 
-  const imageChangeHandler = (e) => {
-    const { currentSlide, nextSlide } = e;
-    if (nextSlide + 1 > maxIndex) setMaxIndex(nextSlide + 1);
-    if (currentSlide - nextSlide > 0) {
-      setDirection("left");
-      setCurrentImage(nextSlide + 1);
-    }
-    if (currentSlide - nextSlide < 0) {
-      setDirection("right");
-      setCurrentImage(nextSlide + 1);
-    }
+  const slideImageHandler = (e) => {
+    const { nextSlide } = e;
+    setCurrentImage(nextSlide);
+  };
+
+  const previewItemClickHandler = (clickSlideId) => {
+    setCurrentImage(clickSlideId);
   };
 
   return (
     <div className={BASE_CLASS}>
       <ReactSlidy
-        ArrowLeft={customArrowLeft}
-        ArrowRight={customArrowRight}
         infiniteLoop
-        doBeforeSlide={imageChangeHandler}
-        slide={currentImage - 1}
+        doBeforeSlide={slideImageHandler}
+        slide={currentImage}
         itemsToPreload={itemsToPreload}
         useFullWidth={false}
-        initialSlide={initialSlide - 1}
+        initialSlide={initialSlide}
       >
         {itemsToRender.map((image) => (
           <img alt="" key={image.id} src={image.src} />
         ))}
       </ReactSlidy>
-      <p>{`${currentImage}/${images.length}`}</p>
+      <p>{`${currentImage + 1}/${images.length}`}</p>
       <div className={`${BASE_CLASS}-scroll`}>
-        <ul className={`${BASE_CLASS}-scroll-ul`}>
+        <ul ref={list} className={`${BASE_CLASS}-scroll-ul`}>
           {itemsToRender.map((item) => (
             <li
               className={`${BASE_CLASS}-scroll-li`}
-              onClick={() => onClickHandler(item.id)}
-              ref={refs[item.id]}
+              onClick={() => previewItemClickHandler(item.id - 1)}
               key={item.id}
             >
               <img
                 className={
-                  currentImage === item.id
+                  currentImage === item.id - 1
                     ? `${BASE_CLASS}-scroll-img selected`
                     : `${BASE_CLASS}-scroll-img`
                 }
