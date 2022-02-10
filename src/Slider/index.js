@@ -32,8 +32,8 @@ export const ImageGallerySlider = ({
   initialSlide = 0,
 }) => {
   const [currentImage, setCurrentImage] = useState(initialSlide);
-  const itemWidth = 100 / itemsToPreload; // 25%
-  const sideItems = (itemsToPreload + 1) / 2; // 3
+  const itemWidth = 100 / itemsToPreload;
+  const sideItems = (itemsToPreload + 1) / 2;
 
   const list = useRef();
 
@@ -51,7 +51,7 @@ export const ImageGallerySlider = ({
     }
     if (currentImage > images.length - 1 - sideItems) {
       list.current.style.transform = `translateX(-${
-        (images.length * itemWidth) / 2
+        (images.length - sideItems - 2) * itemWidth
       }%)`; // 100%
     } else {
       list.current.style.transform = `translateX(-${
@@ -61,11 +61,13 @@ export const ImageGallerySlider = ({
   }, [currentImage, images.length]);
 
   const slideImageHandler = (e) => {
-    const { nextSlide } = e;
+    const { nextSlide, currentSlide } = e;
+    console.log(nextSlide, currentSlide);
     setCurrentImage(nextSlide);
   };
 
   const previewItemClickHandler = (clickSlideId) => {
+    console.log(clickSlideId);
     setCurrentImage(clickSlideId);
   };
 
@@ -80,30 +82,33 @@ export const ImageGallerySlider = ({
           useFullWidth={false}
           initialSlide={initialSlide}
         >
-          {itemsToRender.map((image) => (
-            <span key={image.id} className={`${BASE_CLASS}-imageWrapper`}><img alt="" key={image.id} src={image.src} /></span>
+          {images.map((image, id) => (
+            <span key={id} className={`${BASE_CLASS}-imageWrapper`}>
+              <img alt="" key={id} src={image.src} />
+            </span>
           ))}
         </ReactSlidy>
       </div>
-      <div className={`${BASE_CLASS}-index`}>{`${currentImage + 1}/${images.length}`}</div>
+      <div className={`${BASE_CLASS}-index`}>{`${currentImage + 1}/${
+        images.length
+      }`}</div>
+
       <div className={`${BASE_CLASS}-scroll`}>
         <ul ref={list} className={`${BASE_CLASS}-scroll-ul`}>
-          {itemsToRender.map((item) => (
+          {itemsToRender.map((item, id) => (
             <li
               className={`${BASE_CLASS}-scroll-li`}
-              onClick={() => previewItemClickHandler(item.id - 1)}
-              key={item.id}
+              onClick={() => previewItemClickHandler(id)}
+              key={id}
             >
-              <span className={
-                    currentImage === item.id - 1
-                      ? `${BASE_CLASS}-imageWrapper selected`
-                      : `${BASE_CLASS}-imageWrapper`
-                  }>
-                <img
-
-                  src={item.src}
-                  alt=""
-                />
+              <span
+                className={
+                  currentImage === id
+                    ? `${BASE_CLASS}-imageWrapper selected`
+                    : `${BASE_CLASS}-imageWrapper`
+                }
+              >
+                <img src={item.src} alt="" />
               </span>
             </li>
           ))}

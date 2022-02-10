@@ -1,14 +1,11 @@
 export const IMAGES = [
   {
-    id: 1,
     src: "https://wallpaperaccess.com/full/19693.jpg",
   },
   {
-    id: 2,
     src: "https://p4.wallpaperbetter.com/wallpaper/997/794/382/miles-morales-spiderman-miles-morales-spider-man-peter-parker-spider-gwen-hd-wallpaper-preview.jpg",
   },
   {
-    id: 3,
     src: "https://images.hdqwalls.com/wallpapers/spiderman-miles-morales-2020-4k-h0.jpg",
   },
   {
