@@ -61,11 +61,13 @@ export const ImageGallerySlider = ({
   }, [currentImage, images.length]);
 
   const slideImageHandler = (e) => {
-    const { nextSlide } = e;
+    const { nextSlide, currentSlide } = e;
+    console.log(nextSlide, currentSlide);
     setCurrentImage(nextSlide);
   };
 
   const previewItemClickHandler = (clickSlideId) => {
+    console.log(clickSlideId);
     setCurrentImage(clickSlideId);
   };
 
@@ -79,22 +81,22 @@ export const ImageGallerySlider = ({
         useFullWidth={false}
         initialSlide={initialSlide}
       >
-        {itemsToRender.map((image) => (
-          <img alt="" key={image.id} src={image.src} />
+        {images.map((image, id) => (
+          <img alt="" key={id} src={image.src} />
         ))}
       </ReactSlidy>
       <p>{`${currentImage + 1}/${images.length}`}</p>
       <div className={`${BASE_CLASS}-scroll`}>
         <ul ref={list} className={`${BASE_CLASS}-scroll-ul`}>
-          {itemsToRender.map((item) => (
+          {itemsToRender.map((item, id) => (
             <li
               className={`${BASE_CLASS}-scroll-li`}
-              onClick={() => previewItemClickHandler(item.id - 1)}
-              key={item.id}
+              onClick={() => previewItemClickHandler(id)}
+              key={id}
             >
               <img
                 className={
-                  currentImage === item.id - 1
+                  currentImage === id
                     ? `${BASE_CLASS}-scroll-img selected`
                     : `${BASE_CLASS}-scroll-img`
                 }
