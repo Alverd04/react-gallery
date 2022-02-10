@@ -5,9 +5,7 @@ export default function App() {
   return (
     <div className="app">
       <h1>SLIDER DEMO</h1>
-      <div className="sliderContainer">
-        <ImageGallerySlider images={IMAGES} />
-      </div>
+      <ImageGallerySlider images={IMAGES} />
     </div>
   );
 }

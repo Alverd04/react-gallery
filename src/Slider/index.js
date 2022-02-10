@@ -73,19 +73,26 @@ export const ImageGallerySlider = ({
 
   return (
     <div className={BASE_CLASS}>
-      <ReactSlidy
-        infiniteLoop
-        doBeforeSlide={slideImageHandler}
-        slide={currentImage}
-        itemsToPreload={itemsToPreload}
-        useFullWidth={false}
-        initialSlide={initialSlide}
-      >
-        {images.map((image, id) => (
-          <img alt="" key={id} src={image.src} />
-        ))}
-      </ReactSlidy>
-      <p>{`${currentImage + 1}/${images.length}`}</p>
+      <div className={`${BASE_CLASS}-main`}>
+        <ReactSlidy
+          infiniteLoop
+          doBeforeSlide={slideImageHandler}
+          slide={currentImage}
+          itemsToPreload={itemsToPreload}
+          useFullWidth={false}
+          initialSlide={initialSlide}
+        >
+          {images.map((image, id) => (
+            <span key={id} className={`${BASE_CLASS}-imageWrapper`}>
+              <img alt="" key={id} src={image.src} />
+            </span>
+          ))}
+        </ReactSlidy>
+      </div>
+      <div className={`${BASE_CLASS}-index`}>{`${currentImage + 1}/${
+        images.length
+      }`}</div>
+
       <div className={`${BASE_CLASS}-scroll`}>
         <ul ref={list} className={`${BASE_CLASS}-scroll-ul`}>
           {itemsToRender.map((item, id) => (
@@ -94,15 +101,15 @@ export const ImageGallerySlider = ({
               onClick={() => previewItemClickHandler(id)}
               key={id}
             >
-              <img
+              <span
                 className={
                   currentImage === id
-                    ? `${BASE_CLASS}-scroll-img selected`
-                    : `${BASE_CLASS}-scroll-img`
+                    ? `${BASE_CLASS}-imageWrapper selected`
+                    : `${BASE_CLASS}-imageWrapper`
                 }
-                src={item.src}
-                alt=""
-              />
+              >
+                <img src={item.src} alt="" />
+              </span>
             </li>
           ))}
         </ul>
