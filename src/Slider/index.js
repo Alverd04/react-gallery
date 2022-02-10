@@ -85,7 +85,7 @@ export const ImageGallerySlider = ({
           ))}
         </ReactSlidy>
       </div>
-      <p>{`${currentImage + 1}/${images.length}`}</p>
+      <div className={`${BASE_CLASS}-index`}>{`${currentImage + 1}/${images.length}`}</div>
       <div className={`${BASE_CLASS}-scroll`}>
         <ul ref={list} className={`${BASE_CLASS}-scroll-ul`}>
           {itemsToRender.map((item) => (

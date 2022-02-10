@@ -13,10 +13,12 @@
     --m-base: 8px;
     --p-base: 8px;
     --bd-base: 2px;
-    --trs-base: 0.3s all ease-in-out;
+    --trs-base: all 0.3s ease-in-out;
+    --trs-scroll: all 0.6s ease;
     --p-arrows: calc(var(--p-base) * 6);
     --ar-images: 66.6666%; /* 3:2 Aspect Ratio (divide 2 by 3 = 0.666666) */
     --s-arrows: 2%;
+    --fz-index: 18px;
 }
 
 .app {
@@ -30,4 +32,8 @@ body {
     font-family: 'Roboto', sans-serif;
     background-color: var(--c-black);
     color: var(--c-white);
+}
+
+h1 {
+    margin: calc(var(--m-base) * 3) 0;
 }
