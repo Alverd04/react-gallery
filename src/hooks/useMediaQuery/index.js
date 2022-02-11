@@ -9,6 +9,7 @@ export const useMediaQuery = () => {
       setIsMobile(window.innerWidth < 768)
       setIsTablet(window.innerWidth < 1024)
     }
+    handleResize()
     window.addEventListener('resize', handleResize)
     return () => {
       window.removeEventListener('resize', handleResize)
