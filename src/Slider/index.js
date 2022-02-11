@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import PropTypes from "prop-types";
-import { useEffect, useRef, useState } from "react";
-import "react-slidy/lib/styles.css";
-import ReactSlidy from "react-slidy";
-import "./index.css";
-const BASE_CLASS = "slider";
+import PropTypes from 'prop-types'
+import { useEffect, useRef, useState } from 'react'
+import 'react-slidy/lib/styles.css'
+import ReactSlidy from 'react-slidy'
+import './index.css'
+import { useMediaQuery } from '../hooks/useMediaQuery'
+const BASE_CLASS = 'react-image-gallery'
 
-// Still need to adapt checks for our component
 function getItemsToRender({
   index,
   maxIndex,
@@ -14,28 +14,26 @@ function getItemsToRender({
   itemsToPreload,
   numOfSlides,
 }) {
-  maxIndex > items.length && (maxIndex = items.length);
-  const preload = Math.max(itemsToPreload, numOfSlides);
+  let maxIndexToRender = maxIndex
+  maxIndex > items.length && (maxIndexToRender = items.length)
+  const preload = Math.max(itemsToPreload, numOfSlides)
   if (index >= items.length - numOfSlides) {
     const addNewItems =
-      items.length > numOfSlides ? items.slice(0, numOfSlides - 1) : [];
-    return [...items.slice(0, maxIndex + preload), ...addNewItems];
+      items.length > numOfSlides ? items.slice(0, numOfSlides - 1) : []
+    return [...items.slice(0, maxIndexToRender + preload), ...addNewItems]
   } else {
-    return items.slice(0, maxIndex + preload);
+    return items.slice(0, maxIndexToRender + preload)
   }
 }
 
 // Fix initial slidesCount to start at 0
-export const ImageGallerySlider = ({
-  images,
-  itemsToPreload = 5,
-  initialSlide = 0,
-}) => {
-  const [currentImage, setCurrentImage] = useState(initialSlide);
-  const itemWidth = 100 / itemsToPreload;
-  const sideItems = (itemsToPreload + 1) / 2;
-
-  const list = useRef();
+export const ImageGallerySlider = ({ images, initialSlide = 0 }) => {
+  const { isMobile, isTablet } = useMediaQuery()
+  const itemsToPreload = isMobile ? 3 : isTablet ? 5 : 7
+  const [currentImage, setCurrentImage] = useState(initialSlide)
+  const itemWidth = 100 / itemsToPreload
+  const sideItems = (itemsToPreload + 1) / 2
+  const list = useRef()
 
   const itemsToRender = getItemsToRender({
     index: currentImage,
@@ -43,34 +41,30 @@ export const ImageGallerySlider = ({
     items: images,
     itemsToPreload: itemsToPreload,
     numOfSlides: 1,
-  });
+  })
 
   useEffect(() => {
     if (currentImage < sideItems) {
-      list.current.style.transform = `translateX(${0}%)`; // 0%
+      list.current.style.transform = `translateX(${0}%)`
     }
-    if (currentImage > images.length - 1 - sideItems) {
+    if (currentImage > images.length - sideItems) {
       list.current.style.transform = `translateX(-${
-        (images.length - sideItems - 2) * itemWidth
-      }%)`; // 100%
+        (images.length - itemsToPreload) * itemWidth
+      }%)`
     } else {
       list.current.style.transform = `translateX(-${
         (currentImage + 1 - sideItems) * itemWidth
-      }%)`;
+      }%)`
     }
-  }, [currentImage, images.length]);
+  }, [currentImage, images.length, itemWidth, itemsToPreload, sideItems])
 
   const slideImageHandler = (e) => {
-    const { nextSlide, currentSlide } = e;
-    console.log(nextSlide, currentSlide);
-    setCurrentImage(nextSlide);
-  };
+    setCurrentImage(e.nextSlide)
+  }
 
   const previewItemClickHandler = (clickSlideId) => {
-    console.log(clickSlideId);
-    setCurrentImage(clickSlideId);
-  };
-
+    setCurrentImage(clickSlideId)
+  }
   return (
     <div className={BASE_CLASS}>
       <div className={`${BASE_CLASS}-main`}>
@@ -81,10 +75,11 @@ export const ImageGallerySlider = ({
           itemsToPreload={itemsToPreload}
           useFullWidth={false}
           initialSlide={initialSlide}
+          keyboardNavigation
         >
           {images.map((image, id) => (
             <span key={id} className={`${BASE_CLASS}-imageWrapper`}>
-              <img alt="" key={id} src={image.src} />
+              <img className={`${BASE_CLASS}-image`} src={image.src} alt='' />
             </span>
           ))}
         </ReactSlidy>
@@ -94,29 +89,29 @@ export const ImageGallerySlider = ({
       }`}</div>
 
       <div className={`${BASE_CLASS}-scroll`}>
-        <ul ref={list} className={`${BASE_CLASS}-scroll-ul`}>
+        <ul ref={list} className={`${BASE_CLASS}-items`}>
           {itemsToRender.map((item, id) => (
             <li
-              className={`${BASE_CLASS}-scroll-li`}
+              className={`${BASE_CLASS}-item`}
               onClick={() => previewItemClickHandler(id)}
               key={id}
             >
               <span
                 className={
                   currentImage === id
-                    ? `${BASE_CLASS}-imageWrapper selected`
+                    ? `${BASE_CLASS}-imageWrapper ${BASE_CLASS}-selected`
                     : `${BASE_CLASS}-imageWrapper`
                 }
               >
-                <img src={item.src} alt="" />
+                <img className={`${BASE_CLASS}-image`} src={item.src} alt='' />
               </span>
             </li>
           ))}
         </ul>
       </div>
     </div>
-  );
-};
+  )
+}
 
 ImageGallerySlider.propTypes = {
   /*Images to be shown in gallery */
@@ -134,4 +129,4 @@ ImageGallerySlider.propTypes = {
   itemsToPreload: PropTypes.number,
   /*Initial slide */
   initialSlide: PropTypes.number,
-};
+}
