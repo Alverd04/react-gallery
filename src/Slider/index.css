@@ -21,6 +21,7 @@
   overflow: hidden;
   width: 100vw;
 }
+
 .react-image-gallery-items {
   display: flex;
   list-style: none;
@@ -44,11 +45,19 @@
   .react-image-gallery-item {
     flex: 1 0 calc(100% / 5);
   }
+
+  .react-image-gallery-scroll {
+    overflow: scroll;
+  }
 }
 
 @media (min-width: 1024px) {
   .react-image-gallery-item {
     flex: 1 0 calc(100% / 7);
+  }
+
+  .react-image-gallery-scroll {
+    overflow: scroll;
   }
 }
 
